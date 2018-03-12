@@ -95,7 +95,6 @@ namespace launcher
             Console.WriteLine(process.StartInfo.FileName);
             process.StartInfo.Arguments = $"-m {_module}";
             process.Start();
-            process.WaitForExit();
         }
     }
 }
