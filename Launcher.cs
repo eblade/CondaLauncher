@@ -2,6 +2,8 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using static System.Environment;
+using System.Runtime.InteropServices;
+
 
 namespace launcher
 {
@@ -11,19 +13,30 @@ namespace launcher
         private string[] _condaPackages;
         private string[] _pipPackages;
         private bool _upgrade;
+        private bool _debug;
 
         private string _appData;
         private string _condaExePath;
         private string _condaPath;
         private string _condaEnvPath;
 
-        public Launcher(string envName, string module, string[] condaPackages, string[] pipPackages, bool upgrade=false) {
+        [DllImport("kernel32.dll")]
+        static extern IntPtr GetConsoleWindow();
+
+        [DllImport("user32.dll")]
+        static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+        const int SW_HIDE = 0;
+        const int SW_SHOW = 5;
+
+        public Launcher(string envName, string module, string[] condaPackages, string[] pipPackages, bool upgrade=false, bool debug=false) {
             _condaEnv = envName;
             _module = module;
             _condaPackages = condaPackages;
             _pipPackages = pipPackages;
             _appData = Environment.GetFolderPath(SpecialFolder.LocalApplicationData);
             _upgrade = upgrade;
+            _debug = debug;
         }
 
         public bool Setup() {
@@ -94,6 +107,12 @@ namespace launcher
             process.StartInfo.FileName = Path.Combine(_condaEnvPath, "python.exe");
             Console.WriteLine(process.StartInfo.FileName);
             process.StartInfo.Arguments = $"-m {_module}";
+
+            if (!_debug) {
+                var handle = GetConsoleWindow();
+                ShowWindow(handle, SW_HIDE);
+            }
+
             process.Start();
         }
     }
