@@ -10,4 +10,4 @@ if [ -d bin ]; then
     rm -r bin
 fi
 
-dotnet build -c Release -r win10-x64 -o "$OUTPUTDIR"
+dotnet publish -c Release -r win10-x64 -o "$OUTPUTDIR"
