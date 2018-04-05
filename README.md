@@ -3,7 +3,7 @@ Launcher Exe for Python3 apps using Conda as backbone.
 
 # Description
 
-CondaLauncher provides a C# .NET Core program that can be build with a custom filename. It will read a file `launcher.json` which contains anaconda and pip dependencies. The first time it runs it will set up a conda environment with those dependencies and then launch the python module specified.
+CondaLauncher provides a C# .NET Core program that can be build with a custom filename. It will read a file `launcher.ini` which contains anaconda and pip dependencies. The first time it runs it will set up a conda environment with those dependencies and then launch the python module specified.
 
 # Usage
 
@@ -28,10 +28,10 @@ fi
 
 ./CondaLauncher-$CL_VERSION/build.sh $APP_NAME build
 
-cp launcher.json build/
+cp launcher.ini build/
 ```
 
-Example json file can be found [here](launcher.json).
+Example ini file can be found [here](launcher.ini).
 
 # Flags
 
