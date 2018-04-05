@@ -10,8 +10,8 @@ namespace launcher
     public class Launcher {
         private string _condaEnv;
         private string _module;
-        private string[] _condaPackages;
-        private string[] _pipPackages;
+        private string _condaPackages;
+        private string _pipPackages;
         private bool _upgrade;
         private bool _debug;
 
@@ -29,7 +29,7 @@ namespace launcher
         const int SW_HIDE = 0;
         const int SW_SHOW = 5;
 
-        public Launcher(string envName, string module, string[] condaPackages, string[] pipPackages, bool upgrade=false, bool debug=false) {
+        public Launcher(string envName, string module, string condaPackages, string pipPackages, bool upgrade=false, bool debug=false) {
             _condaEnv = envName;
             _module = module;
             _condaPackages = condaPackages;
@@ -88,16 +88,17 @@ namespace launcher
             var process = new Process();
             process.StartInfo.FileName = _condaExePath;
             Console.WriteLine(process.StartInfo.FileName);
-            process.StartInfo.Arguments = $"create -n {_condaEnv} -y python=3.6 " + string.Join(' ', _condaPackages);
+            process.StartInfo.Arguments = $"create -n {_condaEnv} -y python=3.6 " + (_condaPackages ?? "");
             process.Start();
             process.WaitForExit();
         }
 
         public void InstallPip() {
+            if (string.IsNullOrWhiteSpace(_pipPackages)) return;
             var process = new Process();
             process.StartInfo.FileName = Path.Combine(_condaEnvPath, "python.exe");
             Console.WriteLine(process.StartInfo.FileName);
-            process.StartInfo.Arguments = $"-m pip install {(_upgrade ? "--upgrade " : "")}" + string.Join(' ', _pipPackages);
+            process.StartInfo.Arguments = $"-m pip install {(_upgrade ? "--upgrade " : "")}" + _pipPackages;
             process.Start();
             process.WaitForExit();
         }
