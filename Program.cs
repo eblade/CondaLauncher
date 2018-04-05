@@ -29,9 +29,11 @@ namespace launcher
             launcher.Launch();
         }
 
-        static void Check(string param, string message) {
-            Console.Error.WriteLine($"Required in launcher.ini: {param}");
-            Exit(-1);
+        static void Check(string param, string value) {
+            if (string.IsNullOrWhiteSpace(value)) {
+                Console.Error.WriteLine($"Required in launcher.ini: {param}");
+                Exit(-1);
+            }
         }
     }
 
@@ -50,7 +52,10 @@ namespace launcher
                     string line;
                     while ((line = f.ReadLine()) != null) {
                         var parts = line.Split(new char[] {'='}, 2);
-                        if (parts.Count() != 2) continue;
+                        if (parts.Count() != 2) {
+                            Console.Error.WriteLine("Bad config line: " + line);
+                            continue;
+                        }
                         _values[parts[0].Trim()] = parts[1].Trim();
                     }
                 }
