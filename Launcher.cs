@@ -105,7 +105,7 @@ namespace launcher
 
         public void Launch() {
             var process = new Process();
-            process.StartInfo.FileName = Path.Combine(_condaEnvPath, "python.exe");
+            process.StartInfo.FileName = Path.Combine(_condaEnvPath, _debug ? "python.exe" : "pythonw.exe");
             Console.WriteLine(process.StartInfo.FileName);
             process.StartInfo.Arguments = $"-m {_module}";
 
