@@ -4,7 +4,6 @@ using System.IO;
 using static System.Environment;
 using System.Runtime.InteropServices;
 
-
 namespace launcher
 {
     public class Launcher {
@@ -88,7 +87,10 @@ namespace launcher
             var process = new Process();
             process.StartInfo.FileName = _condaExePath;
             Console.WriteLine(process.StartInfo.FileName);
-            process.StartInfo.Arguments = $"create -n {_condaEnv} -y python=3.6 " + (_condaPackages ?? "");
+            if (!_condaPackages.Contains("python=")) {
+                _condaPackages = "python=3.6 " + (_condaPackages ?? "");
+            }
+            process.StartInfo.Arguments = $"create -n {_condaEnv} -y " + (_condaPackages ?? "");
             process.Start();
             process.WaitForExit();
         }
