@@ -91,6 +91,7 @@ namespace launcher
                 _condaPackages = "python=3.6 " + (_condaPackages ?? "");
             }
             process.StartInfo.Arguments = $"create -n {_condaEnv} -y " + (_condaPackages ?? "");
+            Console.WriteLine(process.StartInfo.Arguments);
             process.Start();
             process.WaitForExit();
         }
